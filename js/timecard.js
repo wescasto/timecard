@@ -1,7 +1,9 @@
 var blocks = [];
 var htmlOutput = '';
 var firstSelection;
+var firstSelectionIndex;
 var secondSelection;
+var secondSelectionIndex;
 
 // display today's date
 var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
@@ -15,7 +17,9 @@ for (let i = 0; i < 6; i++) {
     blocks.push({
         id: 'block' + i,
         status: 'empty',
-        duration: 15
+        duration: 15,
+        isStartTime: false,
+        isEndTime: false
     });
 }
 
@@ -36,9 +40,17 @@ function handleBlockClick(item) {
 
     if (firstSelection == null) {
         firstSelection = blocks[item.id];
-        console.log(firstSelection);
+        blocks[item.id].isStartTime = true;
+        firstSelectionIndex = blocks.findIndex(isStartTime); // findIndex method is not supported in IE
+        console.log(firstSelectionIndex);
     } else {
         secondSelection = blocks[item.id];
-        console.log(secondSelection);
+        blocks[item.id].isEndTime = true;
+        secondSelectionIndex = item.id;
+        console.log(firstSelectionIndex + ' | ' + secondSelectionIndex);
     }
+}
+
+function isStartTime(block) {
+    return block.isStartTime === true;
 }

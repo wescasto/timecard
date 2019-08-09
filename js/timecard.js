@@ -42,12 +42,18 @@ function handleBlockClick(item) {
         firstSelection = blocks[item.id];
         blocks[item.id].isStartTime = true;
         firstSelectionIndex = blocks.findIndex(isStartTime); // findIndex method is not supported in IE
-        console.log(firstSelectionIndex);
-    } else {
+        console.log('first selection: ' + firstSelectionIndex);
+    }
+    else {
         secondSelection = blocks[item.id];
         blocks[item.id].isEndTime = true;
         secondSelectionIndex = item.id;
-        console.log(firstSelectionIndex + ' | ' + secondSelectionIndex);
+        console.log('first selection: ' + firstSelectionIndex + ', second selection: ' + secondSelectionIndex);
+
+        for (var i = secondSelectionIndex; i >= firstSelectionIndex; i--) {
+            let blockDiv = document.getElementById(i);
+            blockDiv.classList.add('active');
+        }
     }
 }
 

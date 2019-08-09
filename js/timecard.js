@@ -1,5 +1,6 @@
 var blocks = [];
 var htmlOutput = '';
+var isSelecting = false;
 var firstSelection;
 var firstSelectionIndex;
 var secondSelection;
@@ -35,24 +36,42 @@ document.querySelectorAll('.block').forEach(item => {
 });
 
 function handleBlockClick(item) {
-    blocks[item.id].status = 'active';
-    item.classList.add('active');
-
-    if (firstSelection == null) {
+    if (isSelecting === false) {
+        isSelecting = true;
         firstSelection = blocks[item.id];
-        blocks[item.id].isStartTime = true;
+        firstSelection.isStartTime = true;
+        firstSelection.status = 'filled';
+        item.classList.remove('empty');
+        item.classList.add('active', 'filled');
         firstSelectionIndex = blocks.findIndex(isStartTime); // findIndex method is not supported in IE
         console.log('first selection: ' + firstSelectionIndex);
+        console.log(blocks);
     }
     else {
+        isSelecting = false;
         secondSelection = blocks[item.id];
-        blocks[item.id].isEndTime = true;
         secondSelectionIndex = item.id;
         console.log('first selection: ' + firstSelectionIndex + ', second selection: ' + secondSelectionIndex);
+        console.log(blocks);
 
+        // highlight selected range
         for (var i = secondSelectionIndex; i >= firstSelectionIndex; i--) {
             let blockDiv = document.getElementById(i);
-            blockDiv.classList.add('active');
+            blocks[i].status = 'filled';
+            blockDiv.classList.remove('empty');
+            blockDiv.classList.add('filled');
+        }
+
+        // reset selection if you try to go backwards
+        if (secondSelectionIndex < firstSelectionIndex) {
+            let firstSelectionDiv = document.getElementById(firstSelectionIndex);
+            firstSelectionDiv.classList.add('empty');
+            firstSelectionDiv.classList.remove('active', 'filled');
+            firstSelection.isStartTime = false;
+            firstSelection.status = 'empty';
+        } else {
+            secondSelection.isEndTime = true;
+            item.classList.add('active');
         }
     }
 }

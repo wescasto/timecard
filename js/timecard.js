@@ -1,3 +1,14 @@
+/* TODO:
+
+- show/hide project form
+- add unique colors per project
+- save to local storge
+- add a Clear All button
+- remove temp object properties
+- clean up code
+
+*/
+
 var blocks = [];
 var htmlOutput = '';
 var isSelecting = false;
@@ -5,6 +16,8 @@ var firstSelection;
 var firstSelectionIndex;
 var secondSelection;
 var secondSelectionIndex;
+var hour = 8;
+var period = 'am';
 
 // display today's date
 var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
@@ -13,15 +26,22 @@ var dateDisplay = document.getElementById('date');
 dateDisplay.innerText = today.toLocaleDateString('en-US', options);
 
 // create grid
-for (let i = 0; i < 8; i++) {
-    if (i%4 == 0) {
-        htmlOutput += '<br>'
+for (let i = 0; i < 40; i++) {
+    if (i % 4 == 0) {
+        if (i > 12) {
+            period = 'pm';
+        }
+        htmlOutput += '<br> <span class="time-label">' + hour + period + '</span>';
+        hour++;
+        if (hour > 12) {
+            // changes 13:00 to 1:00
+            hour = 1;
+        }
     }
     htmlOutput += '<div id="' + i + '" class="block empty"></div>';
     blocks.push({
         id: 'block' + i,
         status: 'empty',
-        duration: 15,
         isStartTime: false, // temp
         isEndTime: false // temp
     });
@@ -55,6 +75,7 @@ function handleSaveClick () {
         let blockDiv = document.getElementById(i);
         blocks[i].status = 'filled';
         blocks[i].project = projectListSelection.value;
+        // TODO: make sure you've selected a project first
         blockDiv.classList.remove('active', 'selected');
         blockDiv.classList.add('filled');
     }

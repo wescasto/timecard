@@ -36,17 +36,36 @@
                 display: inline-block;
                 border: 1px solid lightgray;
                 padding: 20px;
-                margin-bottom: 30px;
+                margin-bottom: 20px;
             }
 
             .filled {
                 background-color: black;
                 border-color: black;
             }
+
+            .container {
+                display: flex;
+                justify-content: center;
+            }
+
+            #grid {
+                margin-right: 60px;
+            }
+
+            .time-label {
+                display: inline-block;
+                width: 50px;
+                text-align: right;
+                padding-right: 10px;
+                vertical-align: top;
+                line-height: 28px;
+            }
         </style>
     </head>
     <body>
         <h1 id="date"></h1>
+        <p>Select a range of time to log. Click twice on a single block to log 15 minutes.</p>
         <div class="dialog">
             <label>Select</label>
             <select id="projectList">
@@ -57,7 +76,11 @@
             </select>
             <button id="saveButton" disabled>Save</button>
         </div>
-        <div id="grid"></div>
+        <div class="container">
+            <div id="grid"></div>
+            <div id="total"><b>Total</b></div>
+        </div>
+        
         <script src="js/timecard.js"></script>
     </body>
 </html>

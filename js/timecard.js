@@ -2,8 +2,13 @@
 
 - show/hide project form
 - add unique colors per project
+- show total hours logged
+- show colors of projects in total
+- allow second click to remove blocks as long as it's after the first selection
+- allow second click to add time if it's still touching the current selection
 - save to local storge
 - add a Clear All button
+- add a way to empty a filled timeslot (or range)
 - remove temp object properties
 - clean up code
 

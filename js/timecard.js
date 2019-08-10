@@ -22,8 +22,8 @@ for (let i = 0; i < 8; i++) {
         id: 'block' + i,
         status: 'empty',
         duration: 15,
-        isStartTime: false,
-        isEndTime: false
+        isStartTime: false, // temp
+        isEndTime: false // temp
     });
 }
 
@@ -43,6 +43,8 @@ saveButton.addEventListener('click', event => {
     handleSaveClick();
 });
 
+var projectListSelection = document.getElementById('projectList');
+
 function handleSaveClick () {
     saveButton.setAttribute('disabled', '');
     firstSelection.isStartTime = false;
@@ -52,6 +54,7 @@ function handleSaveClick () {
     for (var i = secondSelectionIndex; i >= firstSelectionIndex; i--) {
         let blockDiv = document.getElementById(i);
         blocks[i].status = 'filled';
+        blocks[i].project = projectListSelection.value;
         blockDiv.classList.remove('active', 'selected');
         blockDiv.classList.add('filled');
     }

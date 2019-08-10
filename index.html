@@ -7,6 +7,7 @@
         <style>
             body {
                 font-family: sans-serif;
+                text-align: center;
             }
             .block {
                 display: inline-block;
@@ -15,6 +16,7 @@
                 padding: 12px;
                 box-sizing: border-box;
                 border: 2px solid lightgray;
+                border-radius: 2px;
             }
 
             .block:hover {
@@ -27,7 +29,7 @@
             }
 
             .active {
-                border-color: black;
+                border-color: #007fa0;
             }
 
             .dialog {
@@ -41,21 +43,17 @@
                 background-color: black;
                 border-color: black;
             }
-
-            select, label {
-                display: none;
-            }
         </style>
     </head>
     <body>
         <h1 id="date"></h1>
         <div class="dialog">
             <label>Select</label>
-            <select>
+            <select id="projectList">
                 <option>Choose...</option>
-                <option>Project 1</option>
-                <option>Project 2</option>
-                <option>Project 3</option>
+                <option value="project1">Project 1</option>
+                <option value="project2">Project 2</option>
+                <option value="project3">Project 3</option>
             </select>
             <button id="saveButton" disabled>Save</button>
         </div>

@@ -5,31 +5,60 @@
         <title>Timecard</title>
         <!-- <link href="images/favicon.png" rel="shortcut icon" type="image/png" /> -->
         <style>
+            body {
+                font-family: sans-serif;
+            }
             .block {
-                display: inline;
-                background-color: lightgray;
+                display: inline-block;
                 margin-bottom: 5px;
                 margin-right: 5px;
-                padding: 3px 12px;
+                padding: 12px;
                 box-sizing: border-box;
-                border: 2px solid transparent;
+                border: 2px solid lightgray;
             }
 
             .block:hover {
                 cursor: pointer;
             }
 
+            .selected {
+                background: #00baea;
+                border-color: #00baea;
+            }
+
             .active {
-                border: 2px solid black;
+                border-color: black;
+            }
+
+            .dialog {
+                display: inline-block;
+                border: 1px solid lightgray;
+                padding: 20px;
+                margin-bottom: 30px;
             }
 
             .filled {
-                background: #00baea;
+                background-color: black;
+                border-color: black;
+            }
+
+            select, label {
+                display: none;
             }
         </style>
     </head>
     <body>
         <h1 id="date"></h1>
+        <div class="dialog">
+            <label>Select</label>
+            <select>
+                <option>Choose...</option>
+                <option>Project 1</option>
+                <option>Project 2</option>
+                <option>Project 3</option>
+            </select>
+            <button id="saveButton" disabled>Save</button>
+        </div>
         <div id="grid"></div>
         <script src="js/timecard.js"></script>
     </body>

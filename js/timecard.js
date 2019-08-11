@@ -23,7 +23,7 @@ var secondSelection;
 var secondSelectionIndex;
 var hour = 8;
 var period = 'am';
-var colorPattern = ['#ff0000', '#00ff00', '#0000ff'];
+var colorPattern = ['#581d7f', '#c8488a', '#f6b5a4', '#872e93', '#3a1353', '#eb7590'];
 var form = document.getElementById('form');
 
 // display today's date
@@ -72,6 +72,7 @@ saveButton.addEventListener('click', event => {
 var projectListSelection = document.getElementById('projectList');
 
 function handleSaveClick () {
+    form.setAttribute('hidden', '');
     saveButton.setAttribute('disabled', '');
     firstSelection.isStartTime = false;
     secondSelection.isEndTime = false;

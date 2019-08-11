@@ -9,14 +9,20 @@
                 font-family: sans-serif;
                 text-align: center;
             }
+
+            [hidden] {
+                display: none !important;
+            }
+
             .block {
                 display: inline-block;
+                background-color: #e8e8e8;
                 margin-bottom: 5px;
                 margin-right: 5px;
                 padding: 12px;
                 box-sizing: border-box;
-                border: 2px solid lightgray;
-                border-radius: 2px;
+                border: 2px solid #e8e8e8;
+                margin-right: 8px;
             }
 
             .block:hover {
@@ -36,7 +42,9 @@
                 display: inline-block;
                 border: 1px solid lightgray;
                 padding: 20px;
-                margin-bottom: 20px;
+                margin-bottom: 25px;
+                margin-top: 18px;
+                min-width: 200px;
             }
 
             .filled {
@@ -47,6 +55,12 @@
             .container {
                 display: flex;
                 justify-content: center;
+            }
+
+            label {
+                display: block;
+                font-size: .8em;
+                margin-bottom: 5px;
             }
 
             #grid {
@@ -60,25 +74,51 @@
                 padding-right: 10px;
                 vertical-align: top;
                 line-height: 28px;
+                font-size: .9em;
+            }
+
+            .total h2 {
+                margin-top: 0;
+                padding-bottom: 10px;
+                border-bottom: 1px solid #ccc;
+            }
+
+            .right-col {
+                text-align: left;
+            }
+
+            .no-selections {
+                text-align: center;
+            }
+
+            #form:not([hidden]) + .no-selections {
+                display: none;
             }
         </style>
     </head>
     <body>
         <h1 id="date"></h1>
-        <p>Select a range of time to log. Click twice on a single block to log 15 minutes.</p>
-        <div class="dialog">
-            <label>Select</label>
-            <select id="projectList">
-                <option>Choose...</option>
-                <option value="project1">Project 1</option>
-                <option value="project2">Project 2</option>
-                <option value="project3">Project 3</option>
-            </select>
-            <button id="saveButton" disabled>Save</button>
-        </div>
+        <p>Select a range of time by clicking the blocks below. You can click on a block twice to log 15 minutes.</p>
         <div class="container">
             <div id="grid"></div>
-            <div id="total"><b>Total</b></div>
+            <div class="right-col">
+                <div class="dialog">
+                    <div id="form" hidden>
+                        <label>Project</label>
+                        <select id="projectList">
+                            <option>Choose a project...</option>
+                            <option value="project1">Project 1</option>
+                            <option value="project2">Project 2</option>
+                            <option value="project3">Project 3</option>
+                        </select>
+                        <button id="saveButton" disabled>Save</button>
+                    </div>
+                    <div class="no-selections">Nothing selected.</div>
+                </div>
+                <div class="total">
+                    <h2>Total</h2>
+                </div>
+            </div>
         </div>
         
         <script src="js/timecard.js"></script>

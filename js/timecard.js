@@ -1,11 +1,11 @@
 /* TODO:
 
-- show/hide project form
 - add unique colors per project
 - show total hours logged
 - show colors of projects in total
 - allow second click to remove blocks as long as it's after the first selection
 - allow second click to add time if it's still touching the current selection
+- allow blocks ranges to be selected backwards
 - save to local storge
 - add a Clear All button
 - add a way to empty a filled timeslot (or range)
@@ -23,6 +23,8 @@ var secondSelection;
 var secondSelectionIndex;
 var hour = 8;
 var period = 'am';
+var colorPattern = ['#ff0000', '#00ff00', '#0000ff'];
+var form = document.getElementById('form');
 
 // display today's date
 var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
@@ -45,7 +47,6 @@ for (let i = 0; i < 40; i++) {
     }
     htmlOutput += '<div id="' + i + '" class="block empty"></div>';
     blocks.push({
-        id: 'block' + i,
         status: 'empty',
         isStartTime: false, // temp
         isEndTime: false // temp
@@ -80,10 +81,14 @@ function handleSaveClick () {
         let blockDiv = document.getElementById(i);
         blocks[i].status = 'filled';
         blocks[i].project = projectListSelection.value;
-        // TODO: make sure you've selected a project first
+        // TODO: need to check to make sure you've selected a dropdown item first
         blockDiv.classList.remove('active', 'selected');
         blockDiv.classList.add('filled');
+        blockDiv.style.backgroundColor = colorPattern[0];
     }
+
+    // cycle through colors
+    colorPattern.push(colorPattern.shift());
     console.log(blocks);
 }
 
@@ -97,10 +102,10 @@ function handleBlockClick (item) {
         item.classList.add('active', 'selected');
         firstSelectionIndex = blocks.findIndex(isStartTime); // findIndex method is not supported in IE
         console.log('first selection: ' + firstSelectionIndex);
-        console.log(blocks);
     }
     else {
         isSelecting = false;
+        form.removeAttribute('hidden', '');
         saveButton.removeAttribute('disabled');
         secondSelection = blocks[item.id];
         secondSelectionIndex = item.id;
@@ -120,7 +125,6 @@ function handleBlockClick (item) {
         }
 
         console.log('first selection: ' + firstSelectionIndex + ', second selection: ' + secondSelectionIndex);
-        console.log(blocks);
 
         // highlight selected range
         for (var i = secondSelectionIndex; i >= firstSelectionIndex; i--) {

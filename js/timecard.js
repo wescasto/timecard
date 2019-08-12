@@ -10,6 +10,7 @@
 - add a Clear All button
 - add a way to empty a filled timeslot (or range)
 - remove temp object properties
+- add responsive styles
 - clean up code
 
 */
@@ -22,7 +23,7 @@ var firstSelectionIndex;
 var secondSelection;
 var secondSelectionIndex;
 var hour = 8;
-var period = 'am';
+var suffix = 'am';
 var colorPattern = ['#581d7f', '#c8488a', '#f6b5a4', '#872e93', '#3a1353', '#eb7590'];
 var form = document.getElementById('form');
 
@@ -32,13 +33,13 @@ var today  = new Date();
 var dateDisplay = document.getElementById('date');
 dateDisplay.innerText = today.toLocaleDateString('en-US', options);
 
-// create grid
+// create timeslot grid
 for (let i = 0; i < 40; i++) {
     if (i % 4 == 0) {
         if (i > 12) {
-            period = 'pm';
+            suffix = 'pm';
         }
-        htmlOutput += '<br> <span class="time-label">' + hour + period + '</span>';
+        htmlOutput += '<br> <span class="time-label">' + hour + suffix + '</span>';
         hour++;
         if (hour > 12) {
             // changes 13:00 to 1:00
@@ -72,25 +73,28 @@ saveButton.addEventListener('click', event => {
 var projectListSelection = document.getElementById('projectList');
 
 function handleSaveClick () {
-    form.setAttribute('hidden', '');
-    saveButton.setAttribute('disabled', '');
-    firstSelection.isStartTime = false;
-    secondSelection.isEndTime = false;
+    if (projectListSelection.value) {
+        form.setAttribute('hidden', '');
+        saveButton.setAttribute('disabled', '');
+        firstSelection.isStartTime = false;
+        secondSelection.isEndTime = false;
 
-    // highlight selected range
-    for (var i = secondSelectionIndex; i >= firstSelectionIndex; i--) {
-        let blockDiv = document.getElementById(i);
-        blocks[i].status = 'filled';
-        blocks[i].project = projectListSelection.value;
-        // TODO: need to check to make sure you've selected a dropdown item first
-        blockDiv.classList.remove('active', 'selected');
-        blockDiv.classList.add('filled');
-        blockDiv.style.backgroundColor = colorPattern[0];
+        // highlight selected range
+        for (var i = secondSelectionIndex; i >= firstSelectionIndex; i--) {
+            let blockDiv = document.getElementById(i);
+            blocks[i].status = 'filled';
+            blocks[i].project = projectListSelection.value;
+            blockDiv.classList.remove('active', 'selected');
+            blockDiv.classList.add('filled');
+            blockDiv.style.backgroundColor = colorPattern[0];
+        }
+
+        // cycle through colors
+        colorPattern.push(colorPattern.shift());
+        console.log(blocks);
+    } else {
+        console.log('Choose a project');
     }
-
-    // cycle through colors
-    colorPattern.push(colorPattern.shift());
-    console.log(blocks);
 }
 
 function handleBlockClick (item) {

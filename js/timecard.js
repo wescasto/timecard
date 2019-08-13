@@ -1,6 +1,8 @@
 /* TODO:
 
 - add unique colors per project
+- add text field to add new projects
+- populate dropdown dynamically
 - show total hours logged
 - show colors of projects in total
 - allow second click to remove blocks as long as it's after the first selection
@@ -91,6 +93,7 @@ function handleSaveClick () {
 
         // cycle through colors
         colorPattern.push(colorPattern.shift());
+        updateTotal();
         console.log(blocks);
     } else {
         console.log('Choose a project');
@@ -141,6 +144,29 @@ function handleBlockClick (item) {
     }
 }
 
-function isStartTime(block) {
+function isStartTime (block) {
     return block.isStartTime === true;
+}
+
+var totalText = document.getElementById('totalText');
+
+function updateTotal () {
+    let totalTextHTML = '';
+    let project1Length = 0;
+    let project2Length = 0;
+    let project3Length = 0;
+
+    for (let i = 0; i < blocks.length; i++) {
+        if (blocks[i].project === 'project1') {
+            project1Length++;
+        }
+        else if (blocks[i].project === 'project2') {
+            project2Length++;
+        }
+        else if (blocks[i].project === 'project3') {
+            project3Length++;
+        }
+    }
+
+    totalText.innerHTML = 'Project 1: ' + project1Length + '<br>Project 2: ' + project2Length + '<br>Project 3: ' + project3Length;
 }

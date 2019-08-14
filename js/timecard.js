@@ -1,17 +1,18 @@
 /* TODO:
 
-- add unique colors per project
 - populate dropdown dynamically
-- show colors of projects in total
+- consider changing dropdown to buttons to reduce clicks
+- show colors of projects in total (if not going with button option)
 - allow second click to remove blocks as long as it's after the first selection
 - allow second click to add time if it's still touching the current selection
 - allow blocks ranges to be selected backwards
 - save to local storge
-- add a Clear All button
+- add a page reset button
 - add a way to empty a filled timeslot (or range)
 - remove temp object properties
 - add responsive styles
 - clean up code
+- refactor to make more efficient
 
 */
 
@@ -76,21 +77,46 @@ var projectInput = document.getElementById('projectInput');
 
 function handleSaveClick () {
     if (projectInput.value || projectListSelection.value) {
-        // highlight selected range
+        // see if project name is unique
+        function checkBlocks (element) {
+            // TODO: clean up
+            if (projectInput.value) {
+                return element.project === projectInput.value;
+            }
+            else if (projectListSelection.value) {
+                return element.project ===  projectListSelection.value;
+            }
+        }
+
+        const existingProject = blocks.findIndex(checkBlocks);
+
+        if (existingProject == -1) {
+            projectColor = colorPattern[0];
+            // cycle to next color
+            colorPattern.push(colorPattern.shift());
+        }
+        else {
+           projectColor = blocks[existingProject].fill;
+        }
+
+        // highlight selected blocks
         for (var i = secondSelectionIndex; i >= firstSelectionIndex; i--) {
             let blockDiv = document.getElementById(i);
             blocks[i].status = 'filled';
             blockDiv.classList.remove('active', 'selected');
             blockDiv.classList.add('filled');
-            blockDiv.style.backgroundColor = colorPattern[0];
+            blocks[i].fill = projectColor;
+            blockDiv.style.backgroundColor = projectColor;
             
             if (projectInput.value) {
                 // set project to input text
                 blocks[i].project = projectInput.value;
+                // TODO: enter key should submit text input
             }
             else {
                 // set project to dropdown item
                 blocks[i].project = projectListSelection.value;
+                console.log('add via dropdown:' + projectListSelection.value);
             }
         }
 
@@ -102,10 +128,9 @@ function handleSaveClick () {
         saveButton.setAttribute('disabled', '');
         firstSelection.isStartTime = false;
         secondSelection.isEndTime = false;
-
-        // cycle through colors
-        colorPattern.push(colorPattern.shift());
+        
         updateTotal();
+        console.log(blocks);
     }
     else {
         errorMessage.innerText = 'Select a project';

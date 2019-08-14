@@ -1,9 +1,7 @@
 /* TODO:
 
 - add unique colors per project
-- add text field to add new projects
 - populate dropdown dynamically
-- show total hours logged
 - show colors of projects in total
 - allow second click to remove blocks as long as it's after the first selection
 - allow second click to add time if it's still touching the current selection
@@ -28,6 +26,7 @@ var hour = 8;
 var suffix = 'am';
 var colorPattern = ['#581d7f', '#c8488a', '#f6b5a4', '#872e93', '#3a1353', '#eb7590'];
 var form = document.getElementById('form');
+var errorMessage = document.getElementById('errorMessage');
 
 // display today's date
 var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
@@ -73,30 +72,43 @@ saveButton.addEventListener('click', event => {
 });
 
 var projectListSelection = document.getElementById('projectList');
+var projectInput = document.getElementById('projectInput');
 
 function handleSaveClick () {
-    if (projectListSelection.value) {
+    if (projectInput.value || projectListSelection.value) {
+        // highlight selected range
+        for (var i = secondSelectionIndex; i >= firstSelectionIndex; i--) {
+            let blockDiv = document.getElementById(i);
+            blocks[i].status = 'filled';
+            blockDiv.classList.remove('active', 'selected');
+            blockDiv.classList.add('filled');
+            blockDiv.style.backgroundColor = colorPattern[0];
+            
+            if (projectInput.value) {
+                // set project to input text
+                blocks[i].project = projectInput.value;
+            }
+            else {
+                // set project to dropdown item
+                blocks[i].project = projectListSelection.value;
+            }
+        }
+
+        // reset form and values
+        errorMessage.innerText = '';
+        projectInput.value = '';
+        projectListSelection.value = '';
         form.setAttribute('hidden', '');
         saveButton.setAttribute('disabled', '');
         firstSelection.isStartTime = false;
         secondSelection.isEndTime = false;
 
-        // highlight selected range
-        for (var i = secondSelectionIndex; i >= firstSelectionIndex; i--) {
-            let blockDiv = document.getElementById(i);
-            blocks[i].status = 'filled';
-            blocks[i].project = projectListSelection.value;
-            blockDiv.classList.remove('active', 'selected');
-            blockDiv.classList.add('filled');
-            blockDiv.style.backgroundColor = colorPattern[0];
-        }
-
         // cycle through colors
         colorPattern.push(colorPattern.shift());
         updateTotal();
-        console.log(blocks);
-    } else {
-        console.log('Choose a project');
+    }
+    else {
+        errorMessage.innerText = 'Select a project';
     }
 }
 
@@ -109,7 +121,7 @@ function handleBlockClick (item) {
         item.classList.remove('empty');
         item.classList.add('active', 'selected');
         firstSelectionIndex = blocks.findIndex(isStartTime); // findIndex method is not supported in IE
-        console.log('first selection: ' + firstSelectionIndex);
+        //console.log('first selection: ' + firstSelectionIndex);
     }
     else {
         isSelecting = false;
@@ -132,7 +144,7 @@ function handleBlockClick (item) {
             item.classList.add('active');
         }
 
-        console.log('first selection: ' + firstSelectionIndex + ', second selection: ' + secondSelectionIndex);
+        //console.log('first selection: ' + firstSelectionIndex + ', second selection: ' + secondSelectionIndex);
 
         // highlight selected range
         for (var i = secondSelectionIndex; i >= firstSelectionIndex; i--) {
@@ -151,22 +163,23 @@ function isStartTime (block) {
 var totalText = document.getElementById('totalText');
 
 function updateTotal () {
-    let totalTextHTML = '';
-    let project1Length = 0;
-    let project2Length = 0;
-    let project3Length = 0;
+    // create array of project names
+    var projectNames = blocks.map(a => a.project);
 
-    for (let i = 0; i < blocks.length; i++) {
-        if (blocks[i].project === 'project1') {
-            project1Length++;
+    // count unique occurances of projects
+    var obj = {};
+    projectNames.forEach(function(item) {
+        if (typeof obj[item] == 'number') {
+            obj[item]++;
         }
-        else if (blocks[i].project === 'project2') {
-            project2Length++;
+        else {
+            obj[item] = 1;
         }
-        else if (blocks[i].project === 'project3') {
-            project3Length++;
-        }
-    }
+    });
 
-    totalText.innerHTML = 'Project 1: ' + project1Length + '<br>Project 2: ' + project2Length + '<br>Project 3: ' + project3Length;
+    totalText.innerHTML = Object.keys(obj).map(function(item) {
+        if (item !== 'undefined') {
+            return '<div class="total-row"><span class="item">' + item + ': </span><span class="count">' + obj[item] * 15 / 60 + 'h</span></div>';
+        }
+    }).join('');
 }

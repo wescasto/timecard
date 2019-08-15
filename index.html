@@ -88,7 +88,7 @@
             }
 
             #grid {
-                margin-right: 60px;
+                margin-right: 40px;
             }
 
             .time-label {
@@ -106,12 +106,17 @@
             }
 
             .total h2 {
-                margin-top: 0;
                 padding-bottom: 10px;
                 border-bottom: 1px solid #ccc;
             }
 
-            .right-col {
+            .project-col {
+                text-align: left;
+                margin-right: 60px;
+            }
+
+            .total-col {
+                width: 250px;
                 text-align: left;
             }
 
@@ -137,7 +142,7 @@
         <p>Select a range of time by clicking the blocks below. You can click on a block twice to log 15 minutes.</p>
         <div class="container">
             <div id="grid"></div>
-            <div class="right-col">
+            <div class="project-col">
                 <div class="dialog">
                     <form id="form" hidden>
                         <label for="projectInput">Project</label>
@@ -147,6 +152,8 @@
                     </form>
                     <div class="no-selections">Nothing selected.</div>
                 </div>
+            </div>
+            <div class="total-col">
                 <div class="total">
                     <h2>Total</h2>
                     <div id="totalText"></div>

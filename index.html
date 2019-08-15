@@ -135,6 +135,15 @@
                 font-size: .9em;
                 margin-bottom: 5px;
             }
+
+            .total-row {
+                display: flex;
+                justify-content: space-between;
+            }
+
+            .count {
+                text-align: right;
+            }
         </style>
     </head>
     <body>
@@ -144,6 +153,7 @@
             <div id="grid"></div>
             <div class="project-col">
                 <div class="dialog">
+                    <div id="buttonContainer"></div>
                     <form id="form" hidden>
                         <label for="projectInput">Project</label>
                         <input id="projectInput" type="text" placeholder="Type a new project name..." />

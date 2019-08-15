@@ -28,6 +28,7 @@ var suffix = 'am';
 var colorPattern = ['#581d7f', '#c8488a', '#f6b5a4', '#872e93', '#3a1353', '#eb7590'];
 var form = document.getElementById('form');
 var errorMessage = document.getElementById('errorMessage');
+var buttonContainer = document.getElementById('buttonContainer');
 
 // display today's date
 var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
@@ -76,12 +77,9 @@ var projectInput = document.getElementById('projectInput');
 
 function handleSaveClick () {
     if (projectInput.value) {
-        // see if project name is unique
         function checkBlocks (element) {
-            // TODO: clean up
-            if (projectInput.value) {
-                return element.project === projectInput.value;
-            }
+            // check for unique project name
+            return element.project === projectInput.value;
         }
 
         const existingProject = blocks.findIndex(checkBlocks);
@@ -192,7 +190,7 @@ function updateTotal () {
 
     totalText.innerHTML = Object.keys(obj).map(function(item) {
         if (item !== 'undefined') {
-            return '<div class="total-row"><span class="item">' + item + ': </span><span class="count">' + obj[item] * 15 / 60 + 'h</span></div>';
+            return '<div class="total-row"><span class="item">' + item + '</span><span class="count">' + obj[item] * 15 / 60 + 'h</span></div>';
         }
     }).join('');
 }

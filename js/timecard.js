@@ -72,19 +72,15 @@ saveButton.addEventListener('click', event => {
     handleSaveClick();
 });
 
-var projectListSelection = document.getElementById('projectList');
 var projectInput = document.getElementById('projectInput');
 
 function handleSaveClick () {
-    if (projectInput.value || projectListSelection.value) {
+    if (projectInput.value) {
         // see if project name is unique
         function checkBlocks (element) {
             // TODO: clean up
             if (projectInput.value) {
                 return element.project === projectInput.value;
-            }
-            else if (projectListSelection.value) {
-                return element.project ===  projectListSelection.value;
             }
         }
 
@@ -111,20 +107,12 @@ function handleSaveClick () {
             if (projectInput.value) {
                 // set project to input text
                 blocks[i].project = projectInput.value;
-                // TODO: enter key should submit text input
-            }
-            else {
-                // set project to dropdown item
-                blocks[i].project = projectListSelection.value;
-                console.log('add via dropdown:' + projectListSelection.value);
             }
         }
 
         // reset form and values
         errorMessage.innerText = '';
         projectInput.value = '';
-        projectListSelection.value = '';
-        form.setAttribute('hidden', '');
         saveButton.setAttribute('disabled', '');
         firstSelection.isStartTime = false;
         secondSelection.isEndTime = false;

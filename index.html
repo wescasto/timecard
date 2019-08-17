@@ -64,12 +64,11 @@
             }
 
             input {
-                display: inline-block;
                 font-family: inherit;
                 padding: 8px;
                 border: 1px solid #ccc;
                 font-size: 14px;
-                margin-bottom: 5px;
+                margin-bottom: 15px;
                 float: left;
                 box-sizing: border-box;
             }
@@ -101,11 +100,11 @@
                 font-size: .9em;
             }
 
-            .total {
+            .hours-logged {
                 line-height: 1.3;
             }
 
-            .total h2 {
+            .hours-logged h2 {
                 padding-bottom: 10px;
                 border-bottom: 1px solid #ccc;
             }
@@ -136,13 +135,28 @@
                 margin-bottom: 5px;
             }
 
-            .total-row {
+            .total-row, .total {
                 display: flex;
                 justify-content: space-between;
             }
 
             .count {
                 text-align: right;
+            }
+
+            .project-button {
+                display: block;
+                margin-bottom: 5px;
+                border: 0;
+                border-radius: 2px;
+                color: white;
+                padding: 4px 10px;
+                font-family: inherit;
+                font-size: 14px;
+            }
+
+            .project-button:last-of-type {
+                margin-bottom: 0;
             }
         </style>
     </head>
@@ -153,7 +167,6 @@
             <div id="grid"></div>
             <div class="project-col">
                 <div class="dialog">
-                    <div id="buttonContainer"></div>
                     <form id="form" hidden>
                         <label for="projectInput">Project</label>
                         <input id="projectInput" type="text" placeholder="Type a new project name..." />
@@ -161,12 +174,17 @@
                         <input type="submit" id="saveButton" value="Add" disabled>
                     </form>
                     <div class="no-selections">Nothing selected.</div>
+                    <div id="buttonContainer"></div>
                 </div>
             </div>
             <div class="total-col">
-                <div class="total">
-                    <h2>Total</h2>
-                    <div id="totalText"></div>
+                <div class="hours-logged">
+                    <h2>Hours Logged</h2>
+                    <div id="hoursLoggedText"></div>
+                    <div class="total">
+                        <h3>Total</h3>
+                        <div id="totalText"></div>
+                    </div>
                 </div>
             </div>
         </div>

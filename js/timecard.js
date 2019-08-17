@@ -1,8 +1,5 @@
 /* TODO:
 
-- populate dropdown dynamically
-- consider changing dropdown to buttons to reduce clicks
-- show colors of projects in total (if not going with button option)
 - allow second click to remove blocks as long as it's after the first selection
 - allow second click to add time if it's still touching the current selection
 - allow blocks ranges to be selected backwards
@@ -84,13 +81,16 @@ function handleSaveClick () {
 
         const existingProject = blocks.findIndex(checkBlocks);
 
+        // TODO: find out why this is returning 0/-1 and not true/false
         if (existingProject == -1) {
             projectColor = colorPattern[0];
+            buttonContainer.innerHTML += '<button id="' + projectInput.value + '" class="project-button" style="background-color:' + projectColor + ';" onClick="test(this.id)">' + projectInput.value + '</button>';
+
             // cycle to next color
             colorPattern.push(colorPattern.shift());
         }
         else {
-           projectColor = blocks[existingProject].fill;
+            projectColor = blocks[existingProject].fill;
         }
 
         // highlight selected blocks
@@ -115,7 +115,7 @@ function handleSaveClick () {
         firstSelection.isStartTime = false;
         secondSelection.isEndTime = false;
         
-        updateTotal();
+        printHoursLogged();
         console.log(blocks);
     }
     else {
@@ -171,10 +171,11 @@ function isStartTime (block) {
     return block.isStartTime === true;
 }
 
+var hoursLoggedText = document.getElementById('hoursLoggedText');
 var totalText = document.getElementById('totalText');
 
-function updateTotal () {
-    // create array of project names
+function printHoursLogged () {
+    // create array of only project names
     var projectNames = blocks.map(a => a.project);
 
     // count unique occurances of projects
@@ -188,9 +189,13 @@ function updateTotal () {
         }
     });
 
-    totalText.innerHTML = Object.keys(obj).map(function(item) {
+    hoursLoggedText.innerHTML = Object.keys(obj).map(function(item) {
         if (item !== 'undefined') {
             return '<div class="total-row"><span class="item">' + item + '</span><span class="count">' + obj[item] * 15 / 60 + 'h</span></div>';
         }
     }).join('');
+}
+
+function test (clickedID) {
+    console.log('clicked!' + clickedID);
 }

@@ -84,7 +84,7 @@ function handleSaveClick () {
         // TODO: find out why this is returning 0/-1 and not true/false
         if (existingProject == -1) {
             projectColor = colorPattern[0];
-            buttonContainer.innerHTML += '<button id="' + projectInput.value + '" class="project-button" style="background-color:' + projectColor + ';" onClick="test(this.id)">' + projectInput.value + '</button>';
+            buttonContainer.innerHTML += '<button id="' + projectInput.value + '" class="project-button" style="background-color:' + projectColor + ';" onClick="buttonClick(this.id)">' + projectInput.value + '</button>';
 
             // cycle to next color
             colorPattern.push(colorPattern.shift());
@@ -173,6 +173,7 @@ function isStartTime (block) {
 
 var hoursLoggedText = document.getElementById('hoursLoggedText');
 var totalText = document.getElementById('totalText');
+var totalTimeBlocks = 0; // for total column
 
 function printHoursLogged () {
     // create array of only project names
@@ -196,6 +197,7 @@ function printHoursLogged () {
     }).join('');
 }
 
-function test (clickedID) {
-    console.log('clicked!' + clickedID);
+function buttonClick (clickedID) {
+    projectInput.value = clickedID;
+    handleSaveClick();
 }
